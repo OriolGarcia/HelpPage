@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+          <title>Help</title>
+          <style>
+            body { 
+              zoom: 2.5; /* Aumenta el contenido al 150% */
+              margin: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              background-color: #f5f5f5;
+            }
+          </style>
+        </head>
+        <body>
+          <elevenlabs-convai agent-id="mlgTt6gLenLjESe911xh"></elevenlabs-convai>
+          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+         
+          
+            <script>
+          
+          // Solicitamos acceso al micrófono cuando la página cargue
+          window.onload = function() {
+            navigator.mediaDevices.getUserMedia({audio: true})
+              .then(function(stream) {
+                console.log("Micrófono accedido correctamente");
+              })
+              .catch(function(error) {
+                console.log("No se pudo acceder al micrófono: ", error);
+              });
+          };
+          </script>
+        </body>
+        </html>
