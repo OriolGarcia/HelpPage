@@ -1,37 +1,72 @@
 <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Help</title>
-          <style>
-            body { 
-              zoom: 2.5; /* Aumenta el contenido al 150% */
-              margin: 0;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              background-color: #f5f5f5;
+<html>
+<head>
+  <title>Help</title>
+  <style>
+    body { 
+      zoom: 2.5; /* Aumenta el contenido al 150% */
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <div id="helper-container">
+    <p>Sminos Helper</p>
+  </div>
+  <elevenlabs-convai agent-id="mlgTt6gLenLjESe911xh"></elevenlabs-convai>
+  <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+  
+  <script>
+    // Función para obtener el valor de un parámetro GET de la URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Función para cargar y añadir dinámicamente el contenido HTML
+    function loadLanguageContent(language) {
+      const validLanguages = ['ca', 'en', 'es', 'fr', 'it', 'pt'];
+      if (validLanguages.includes(language)) {
+        fetch(`${language}.html`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error al cargar el archivo');
             }
-          </style>
-        </head>
-        <body>
-          <p>Sminos Helper</p>
-          <elevenlabs-convai agent-id="mlgTt6gLenLjESe911xh"></elevenlabs-convai>
-          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
-         
-          
-            <script>
-          
-          // Solicitamos acceso al micrófono cuando la página cargue
-          window.onload = function() {
-            navigator.mediaDevices.getUserMedia({audio: true})
-              .then(function(stream) {
-                console.log("Micrófono accedido correctamente");
-              })
-              .catch(function(error) {
-                console.log("No se pudo acceder al micrófono: ", error);
-              });
-          };
-          </script>
-        </body>
-        </html>
+            return response.text();
+          })
+          .then(data => {
+            // Inserta el contenido obtenido directamente en la página
+            const container = document.getElementById('helper-container');
+            container.innerHTML = data;
+          })
+          .catch(error => {
+            console.error('Error al cargar el contenido:', error);
+            document.getElementById('helper-container').innerText = 'Error al cargar el contenido del idioma.';
+          });
+      } else {
+        document.getElementById('helper-container').innerText = 'Idioma no válido.';
+      }
+    }
+
+    // Obtener el idioma del parámetro GET y cargar el contenido
+    const language = getQueryParam('language');
+    loadLanguageContent(language);
+
+    // Solicitar acceso al micrófono cuando la página cargue
+    window.onload = function() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+          console.log("Micrófono accedido correctamente");
+        })
+        .catch(function(error) {
+          console.log("No se pudo acceder al micrófono: ", error);
+        });
+    };
+  </script>
+</body>
+</html>
